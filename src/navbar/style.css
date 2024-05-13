@@ -1,0 +1,76 @@
+.App-header {
+    max-width: 1920px;
+    width: 100%;
+    max-height: 100px;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.94);
+    z-index: 1000;
+  }
+  
+  .conteiner{
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .header-wrap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 13px;
+  }
+
+  .header-menu{
+    position: fixed;
+    left: 300px;
+    top: 16px;
+  }
+
+  .header-menu ul{
+    display: flex;
+    gap: 50px;
+  }
+
+  .header-menu ul li {
+    list-style-type: none;
+  }
+  
+  .header-menu ul li a{
+    text-decoration: none;
+    color: #FFF;
+    padding: 10px;
+    font-size: 24px;
+    font-weight: 500;
+  }
+  
+  .header-menu ul li a:hover{
+    background-color: #555;
+  }
+  
+  .logo{
+    max-width: 200px;
+    max-height: 72px;
+    width: 100%;
+    height: 100%;
+    margin-left: 48px;
+    margin-top: 15px;
+  }
+
+  .top-button{
+    font-size: 24px;
+    font-weight: 500;
+    padding: 10px;
+    color: #FFF;
+    border: none;
+    text-decoration: none;
+    margin-right: 60px;
+    margin-bottom: 12px;
+  }
+
+  .top-button:hover{
+    background-color: #555;
+  }
+

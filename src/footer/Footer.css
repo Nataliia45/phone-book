@@ -1,0 +1,11 @@
+.Footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.94);
+  }
+
+.footer-bottom{
+    color: white;
+  }
