@@ -1,111 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import Sidebar from './Sidebar.js';
-import Footer from './footer/Footer.js';
-
-
-import algarve from "./img/algarve.jpg";
-import sardin from "./img/sardin.jpg";
-import krit from "./img/krit.jpg";
-import Nav from './navbar/Nav.js';
-import star from "./img/Star.png";
-import location from "./img/Location.png";
-
+import Contacts from './Contacts';
+import ContactForm from './ContactForm';
 
 
 function App() {
+    const [contacts, setContacts] = useState([]);
+    const [currentPage, setCurrentPage] = useState('contacts');
+    const [currentContact, setCurrentContact] = useState(null);
+
+    const addContact = (contact) => {
+        setContacts([...contacts, contact]);
+      };
+    
+      const updateContact = (updatedContact) => {
+        setContacts(contacts.map(contact => (contact.id === updatedContact.id ? updatedContact : contact)));
+      };
+    
+      const deleteContact = (id) => {
+        setContacts(contacts.filter(contact => contact.id !== id));
+      };
 
   return (
 
     <div className="App">
-
-    <Sidebar/>
-
-    <Nav/>
-
-    <main>
-      <section className="recomend-wrap">
-
-          <h2>Recommended Destination:</h2>
-
-          <div className="our-destination">
-
-              <article className="our-destination-img">
-                  <img src={algarve} alt="" className="picture"/>
-                  <h3>Algarve</h3>
-                  <div className="locator">
-                      <span><img src={location} alt=""/>Portugal</span>
-                  </div>
-                  <div className="star">
-                  <span><img src={star}  alt="" className="star-img"/>4.8</span>
-                  </div>
-              </article>
-
-              <article className="our-destination-img">
-                  <img src={sardin} alt="" className="picture"/>
-                  <h3>Sardinia</h3>
-                  <div className="locator">
-                      <span><img src={location} alt=""/>Spain</span>
-                  </div>
-                  <div className="star">
-                      <span><img src={star} alt="" className="star-img"/>4.7</span>
-                  </div>
-              </article>
-
-              <article className="our-destination-img">
-                  <img src={krit} alt="" className="picture"/>
-                  <h3>Krit</h3>
-                  <div className="locator">
-                      <span><img src={location} alt=""/>Greece</span>
-                  </div>
-                  <div className="star">
-                      <span><img src={star}  alt="" className="star-img"/>4.6</span>
-                  </div>
-              </article>
-
-              <article className="our-destination-img">
-                  <img src={algarve} alt="" className="picture"/>
-                  <h3>Algarve</h3>
-                  <div className="locator">
-                      <span><img src={location} alt=""/>Portugal</span>
-                  </div>
-                  <div className="star">
-                  <span><img src={star}  alt="" className="star-img"/>4.8</span>
-                  </div>
-              </article>
-
-              <article className="our-destination-img">
-                  <img src={sardin} alt="" className="picture"/>
-                  <h3>Sardinia</h3>
-                  <div className="locator">
-                      <span><img src={location} alt=""/>Spain</span>
-                  </div>
-                  <div className="star">
-                      <span><img src={star} alt="" className="star-img"/>4.7</span>
-                  </div>
-              </article>
-
-              <article className="our-destination-img">
-                  <img src={krit} alt="" className="picture"/>
-                  <h3>Krit</h3>
-                  <div className="locator">
-                      <span><img src={location} alt=""/>Greece</span>
-                  </div>
-                  <div className="star">
-                      <span><img src={star}  alt="" className="star-img"/>4.6</span>
-                  </div>
-              </article>
-
-          </div>
-      </section>
-    </main>
-
-    <Footer/>
-
+      <nav>
+        <button onClick={() => setCurrentPage('contacts')}>Список контактов</button>
+        <button onClick={() => { setCurrentContact(null); setCurrentPage('add'); }}>Добавить контакт</button>
+      </nav>
+      {currentPage === 'contacts' && (
+        <Contacts
+          contacts={contacts}
+          onDelete={deleteContact}
+          onEdit={(contact) => { setCurrentContact(contact); setCurrentPage('edit'); }}
+        />
+      )}
+      {(currentPage === 'add' || currentPage === 'edit') && (
+        <ContactForm
+          contact={currentContact}
+          onSave={(contact) => {
+            if (currentPage === 'edit') {
+              updateContact(contact);
+            } else {
+              addContact(contact);
+            }
+            setCurrentPage('contacts');
+          }}
+          onCancel={() => setCurrentPage('contacts')}
+        />
+      )}
     </div>
-
-    
-
   );
 }
 
