@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import './App.css';
 import Contacts from './Contacts';
 import ContactForm from './ContactForm';
+import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 
 function App() {
     const [contacts, setContacts] = useState([]);
-    const [currentPage, setCurrentPage] = useState('contacts');
     const [currentContact, setCurrentContact] = useState(null);
+    const navigate = useNavigate();
 
     const addContact = (contact) => {
         setContacts([...contacts, contact]);
@@ -25,30 +26,38 @@ function App() {
 
     <div className="App">
       <nav>
-        <button onClick={() => setCurrentPage('contacts')}>Список контактов</button>
-        <button onClick={() => { setCurrentContact(null); setCurrentPage('add'); }}>Добавить контакт</button>
+         <Link to="/">Список контактов</Link>
+         <Link to="/add" onClick={() => setCurrentContact(null)}>Добавить контакт</Link>
       </nav>
-      {currentPage === 'contacts' && (
-        <Contacts
+
+      <Routes>
+        <Route path="/" element= {
+          <Contacts
           contacts={contacts}
           onDelete={deleteContact}
-          onEdit={(contact) => { setCurrentContact(contact); setCurrentPage('edit'); }}
+          onEdit={(contact) => { setCurrentContact(contact); navigate('edit'); }}
         />
-      )}
-      {(currentPage === 'add' || currentPage === 'edit') && (
+        } />
+        <Route path="/add" element= {
+          <ContactForm
+          onSave={(contact) => {
+            addContact(contact);
+            navigate('/');
+          }}
+          onCancel={() => navigate('/')}
+        />
+       }/>
+       <Route path="/edit" element={
         <ContactForm
           contact={currentContact}
           onSave={(contact) => {
-            if (currentPage === 'edit') {
-              updateContact(contact);
-            } else {
-              addContact(contact);
-            }
-            setCurrentPage('contacts');
+            updateContact(contact);
+            navigate('/');
           }}
-          onCancel={() => setCurrentPage('contacts')}
-        />
-      )}
+          onCancel={() => navigate('/')}
+          />
+          } />
+      </Routes>
     </div>
   );
 }

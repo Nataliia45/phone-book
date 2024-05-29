@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import ConfirmModal from './ConfirmModal/ConfirmModal';
 
 
 function Contacts({ contacts, onDelete, onEdit }) {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [contactToDelete, setContactToDelete] = useState(null);
+
+  const handleDelete = (contact) => {
+    setContactToDelete(contact);
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+      onDelete(contactToDelete.id);
+      setIsModalOpen(false);
+      setContactToDelete(null);
+  };
+
   const tableStyle = {
     width: '100%',
     borderCollapse: 'collapse',
@@ -38,12 +54,19 @@ function Contacts({ contacts, onDelete, onEdit }) {
               <td style={thTdStyle}>{contact.phone}</td>
               <td style={thTdStyle}>
                 <button onClick={() => onEdit(contact)}>Редактировать</button>
-                <button onClick={() => onDelete(contact.id)}>Удалить</button>
+                <button onClick={() => handleDelete(contact)}>Удалить</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <ConfirmModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={confirmDelete}
+            />
+
     </div>
   );
 }
